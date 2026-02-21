@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRAND HOTEL | Blue · Black · White</title>
+  <!-- Font Awesome 5 (free) -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <!-- Serif headings: Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* === global style (shared by all pages) === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f0f6fc;
+      color: #1e1e1e;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .page-title, .logo, .nav-links a, .hero-title {
+      font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      font-weight: 600;
+    }
+
+    /* navigation (sticky on all pages) */
+    .navbar {
+      background: #0a1c2e;
+      color: white;
+      padding: 1rem 5%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 16px rgba(0,20,40,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+      color: white;
+      cursor: pointer;
+    }
+    .logo span {
+      font-weight: 400;
+      color: #b0d4f0;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .nav-links a:hover {
+      border-bottom-color: #ffffff;
+      color: #d4eaff;
+    }
+    .nav-links a.active {
+      border-bottom-color: #ffffff;
+      color: #d4eaff;
+    }
+
+    /* Auth Buttons */
+    .auth-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-left: 1rem;
+    }
+    .auth-btn {
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+    .login-btn {
+      background: transparent;
+      color: white;
+      border: 2px solid #b0d4f0;
+    }
+    .login-btn:hover {
+      background: #b0d4f0;
+      color: #0a1c2e;
+    }
+    .register-btn {
+      background: #1f4b75;
+      color: white;
+      border: 2px solid #1f4b75;
+    }
+    .register-btn:hover {
+      background: #2d5f8a;
+      border-color: #2d5f8a;
+    }
+
+    /* page container (margin auto, max-width) */
+    .page-container {
+      max-width: 1300px;
+      margin: 2.5rem auto;
+      padding: 0 5%;
+    }
+
+    /* base card style (every page uses it) */
+    .page-card {
+      background: white;
+      border-radius: 28px;
+      padding: 2.2rem 2.8rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 16px 32px rgba(0, 30, 60, 0.12);
+      border: 1px solid #cbdbe9;
+    }
+
+    .page-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      border-left: 8px solid #0f2f4f;
+      padding-left: 1.5rem;
+      margin-bottom: 2rem;
+      color: #0a1c2e;
+    }
+    .page-title i {
+      color: #1f4b75;
+      margin-right: 1rem;
+    }
+
+    /* grids */
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      grid-gap: 2rem;
+      margin-top: 2rem;
+    }
+    .grid-2 { grid-template-columns: repeat(2,1fr); }
+    .grid-3 { grid-template-columns: repeat(3,1fr); }
+    .grid-4 { grid-template-columns: repeat(4,1fr); }
+
+    /* image styling (real unsplash) */
+    .real-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 3px solid white;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+    }
+    .real-image:hover {
+      transform: scale(1.02);
+    }
+    .image-card {
+      background: transparent;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .image-caption {
+      text-align: center;
+      margin-top: 0.5rem;
+      color: #0a1c2e;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    /* reusable components */
+    .service-detailed-card, .event-card {
+      background: #f2f7fd;
+      border-radius: 28px;
+      padding: 1.8rem;
+      border: 1px solid #bed3e8;
+      transition: 0.15s;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .service-detailed-card:hover, .event-card:hover {
+      background: white;
+      box-shadow: 0 12px 24px rgba(0,40,70,0.1);
+    }
+    .service-icon {
+      font-size: 2.8rem;
+      color: #0a1c2e;
+      margin-bottom: 0.8rem;
+    }
+    .service-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0a1c2e;
+      margin-bottom: 0.8rem;
+    }
+    .service-desc {
+      font-size: 1rem;
+      color: #1e3b4f;
+      margin-bottom: 1.2rem;
+      flex-grow: 1;
+    }
+
+    .staff-card {
+      background: #e1edf7;
+      border-radius: 28px;
+      padding: 1.8rem;
+      border: 1px solid #a0c2db;
+    }
+    .staff-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #0a1c2e;
+    }
+    .staff-contact {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 0.5rem 0;
+    }
+
+    .rating-category-card {
+      background: #f2f7fd;
+      border-radius: 28px;
+      padding: 1.8rem;
+      border: 1px solid #bed3e8;
+      text-align: center;
+    }
+    .rating-score {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #0a1c2e;
+      line-height: 1.2;
+    }
+    .rating-label {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #1f4b75;
+      margin-bottom: 0.5rem;
+    }
+    .stars i {
+      color: #f5b342;
+      font-size: 1.4rem;
+      margin: 0 2px;
+    }
+
+    .badge {
+      background: #0f2f4f;
+      color: white;
+      padding: 0.25rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .booking-form {
+      background: #e1edf7;
+      border-radius: 32px;
+      padding: 2.2rem;
+      border: 1px solid #a0c2db;
+    }
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      margin-bottom: 1.8rem;
+    }
+    .form-group {
+      flex: 1 1 200px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #0f2f4f;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid #96b8d4;
+      border-radius: 60px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .form-group textarea {
+      border-radius: 20px;
+      resize: vertical;
+    }
+    .btn {
+      background: #0a1c2e;
+      color: white;
+      border: none;
+      padding: 0.9rem 2.8rem;
+      border-radius: 60px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid #608ab0;
+    }
+    .btn:hover {
+      background: #1f4b75;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      background: #e1edf7;
+      border-radius: 50px;
+      padding: 2.2rem;
+      border: 1px solid #a0c2db;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      font-size: 1.2rem;
+    }
+
+    .hero-heading {
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: #0a1c2e;
+      line-height: 1.2;
+    }
+    .hero-sub {
+      font-size: 1.3rem;
+      color: #2b4d6a;
+      margin: 1rem 0 2rem;
+    }
+
+    .page-section {
+      display: block;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Auth Pages Styling */
+    .auth-card {
+      background: white;
+      border-radius: 28px;
+      padding: 2.5rem;
+      box-shadow: 0 16px 32px rgba(0, 30, 60, 0.12);
+      border: 1px solid #cbdbe9;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .auth-title {
+      font-size: 2.2rem;
+      color: #0a1c2e;
+      margin-bottom: 2rem;
+      text-align: center;
+      border-left: none;
+    }
+    .auth-title i {
+      color: #1f4b75;
+      margin-right: 0.5rem;
+    }
+
+    .auth-form .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .remember-me input {
+      width: auto;
+    }
+    .forgot-password {
+      color: #1f4b75;
+      text-decoration: none;
+    }
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .auth-links {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .auth-links a {
+      color: #1f4b75;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #cbdbe9;
+    }
+    .divider span {
+      padding: 0 1rem;
+      color: #6c757d;
+    }
+
+    .social-login {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .social-btn {
+      background: #f2f7fd;
+      border: 1px solid #bed3e8;
+      border-radius: 50px;
+      padding: 0.8rem 1.5rem;
+      color: #0a1c2e;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: 0.2s;
+    }
+    .social-btn:hover {
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .password-requirements {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-top: 0.3rem;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    /* Booking Steps Styling */
+    .booking-steps {
+      display: none;
+      margin-top: 2rem;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .step-indicator::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #ddd;
+      z-index: 1;
+    }
+    
+    .step {
+      position: relative;
+      z-index: 2;
+      background: white;
+      padding: 0 1rem;
+      text-align: center;
+    }
+    
+    .step-number {
+      width: 50px;
+      height: 50px;
+      background: #f0f0f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      font-weight: bold;
+      border: 2px solid #ddd;
+    }
+    
+    .step.active .step-number {
+      background: #c4a962;
+      color: white;
+      border-color: #c4a962;
+    }
+    
+    .step.completed .step-number {
+      background: #28a745;
+      color: white;
+      border-color: #28a745;
+    }
+    
+    .step-content {
+      display: none;
+      padding: 1.5rem;
+      background: #f9f9f9;
+      border-radius: 28px;
+    }
+    
+    .step-content.active {
+      display: block;
+    }
+    
+    .room-card {
+      border: 2px solid transparent;
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .room-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .room-card.selected {
+      border-color: #c4a962;
+      background: #fcf9f0;
+    }
+    
+    .room-price {
+      font-size: 1.5rem;
+      color: #c4a962;
+      font-weight: bold;
+    }
+    
+    .addon-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      background: white;
+      border-radius: 15px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .addon-item input[type="checkbox"] {
+      margin-right: 1rem;
+      width: 20px;
+      height: 20px;
+    }
+    
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .payment-method {
+      border: 2px solid #ddd;
+      border-radius: 15px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .payment-method:hover {
+      border-color: #c4a962;
+    }
+    
+    .payment-method.selected {
+      border-color: #c4a962;
+      background: #fcf9f0;
+    }
+    
+    .payment-method i {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    
+    .summary-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .summary-total {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #c4a962;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #c4a962;
+      color: #c4a962;
+    }
+    
+    .btn-outline:hover {
+      background: #c4a962;
+      color: white;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .navbar { flex-direction: column; gap: 0.8rem; }
+      .nav-links { justify-content: center; }
+      .auth-buttons { margin-left: 0; margin-top: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ========== GLOBAL NAVIGATION ========== -->
+  <header class="navbar">
+    <div class="logo" onclick="showPage('home')"><span>GRAND</span> HOTEL</div>
+    <div class="nav-links">
+      <a onclick="showPage('home')" class="nav-link active" id="nav-home">Home</a>
+      <a onclick="showPage('about')" class="nav-link" id="nav-about">About</a>
+      <a onclick="showPage('booking')" class="nav-link" id="nav-booking">Booking</a>
+      <a onclick="showPage('management')" class="nav-link" id="nav-management">Management</a>
+      <a onclick="showPage('services')" class="nav-link" id="nav-services">Services</a>
+      <a onclick="showPage('reviews')" class="nav-link" id="nav-reviews">Reviews</a>
+      <a onclick="showPage('events')" class="nav-link" id="nav-events">Events</a>
+      <a onclick="showPage('attractions')" class="nav-link" id="nav-attractions">Nearby</a>
+      <a onclick="showPage('contact')" class="nav-link" id="nav-contact">Contact</a>
+    </div>
+    <div class="auth-buttons">
+      <button onclick="showPage('login')" class="auth-btn login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <button onclick="showPage('register')" class="auth-btn register-btn"><i class="fas fa-user-plus"></i> Register</button>
+    </div>
+  </header>
+
+  <!-- ========== MAIN CONTAINER WITH ALL PAGES ========== -->
+  <main class="page-container">
+    <!-- HOME PAGE SECTION -->
+    <section id="home-page" class="page-section">
+      <div class="page-card">
+        <div style="margin-bottom: 2rem;">
+          <h1 class="hero-heading">GRAND HOTEL<br><span style="color:#1f4b75;">where the sky meets the tide</span></h1>
+          <p class="hero-sub">Perched on black cliffs · boutique luxury · endless blue horizons</p>
+        </div>
+        
+        <!-- Quick Booking Form on Homepage -->
+        <div class="booking-form" style="margin-bottom: 2.5rem; background: #1f4b75; border-color: #0a1c2e;">
+          <h3 style="color: white; margin-bottom: 1.5rem; font-size: 1.8rem;"><i class="fas fa-calendar-check"></i> Book Your Stay</h3>
+          <div class="form-row">
+            <div class="form-group"><label style="color: white;">arrival</label><input type="date" id="home-arrival" value="2025-08-01"></div>
+            <div class="form-group"><label style="color: white;">departure</label><input type="date" id="home-departure" value="2025-08-07"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label style="color: white;">adults</label><select id="home-adults"><option>2</option><option>1</option><option>3</option><option>4</option></select></div>
+            <div class="form-group"><label style="color: white;">children</label><select id="home-children"><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
+            <div class="form-group"><label style="color: white;">room</label><select id="home-room">
+              <option value="deluxe">deluxe ocean</option>
+              <option value="cliff">cliff suite</option>
+              <option value="lighthouse">lighthouse</option>
+              <option value="presidential">presidential</option>
+            </select></div>
+          </div>
+          <button class="btn" onclick="quickBookFromHome()" style="background: white; color: #0a1c2e; border: none;"><i class="fas fa-book"></i> Book Now</button>
+        </div>
+        
+        <div style="margin: 2.5rem 0;">
+          <h3 style="font-size: 1.8rem; color:#0a1c2e; margin-bottom:1.5rem;"><i class="fas fa-camera"></i> hotel overview</h3>
+          <div class="grid-4">
+            <div class="image-card"><img class="real-image" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=250&fit=crop" alt="Hotel exterior"><div class="image-caption">grand facade · black stone</div></div>
+            <div class="image-card"><img class="real-image" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop" alt="Infinity pool"><div class="image-caption">infinity pool · ocean edge</div></div>
+            <div class="image-card"><img class="real-image" src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=400&h=250&fit=crop" alt="Blue spa"><div class="image-caption">blue spa · serenity</div></div>
+            <div class="image-card"><img class="real-image" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop" alt="Restaurant"><div class="image-caption">cliff restaurant · seafood grill</div></div>
+            <div class="image-card"><img class="real-image" src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=400&h=250&fit=crop" alt="Ocean suite"><div class="image-caption">ocean suite · private terrace</div></div>
+            <div class="image-card"><img class="real-image" src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=400&h=250&fit=crop" alt="Marina"><div class="image-caption">private marina · yacht</div></div>
+            <div class="image-card"><img class="real-image" src="https://images.unsplash.com/photo-1544984243-ec57ea16fe25?w=400&h=250&fit=crop" alt="Lighthouse view"><div class="image-caption">lighthouse view from hotel</div></div>
+            <div class="image-card"><img class="real-image" src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&h=250&fit=crop" alt="Gym"><div class="image-caption">black iron gym · ocean view</div></div>
+          </div>
+        </div>
+
+        <div style="background: #e7f0f9; border-radius: 48px; padding: 2.5rem; margin: 2rem 0;">
+          <h2 style="font-size: 2.4rem; color:#0a1c2e; margin-bottom:2rem;"><i class="fas fa-star" style="color:#1f4b75;"></i> why choose grand hotel</h2>
+          <div class="grid-2" style="align-items: center;">
+            <div>
+              <div style="display: flex; gap: 1.2rem; margin-bottom: 2rem;"><i class="fas fa-medal" style="font-size:2.5rem; color:#0f2f4f;"></i><div><h3 style="font-size:1.6rem;">unmatched location</h3><p>Directly on the black rock coastline – the only hotel with private access to tidal caves and sunset cliffs.</p></div></div>
+              <div style="display: flex; gap: 1.2rem; margin-bottom: 2rem;"><i class="fas fa-wine-glass-alt" style="font-size:2.5rem; color:#0f2f4f;"></i><div><h3 style="font-size:1.6rem;">curated experiences</h3><p>Whale watching, private sailing, and sommelier-led tastings in our basalt wine cellar.</p></div></div>
+              <div style="display: flex; gap: 1.2rem; margin-bottom: 2rem;"><i class="fas fa-leaf" style="font-size:2.5rem; color:#0f2f4f;"></i><div><h3 style="font-size:1.6rem;">sustainable luxury</h3><p>Fully solar-powered, organic linens, and zero‑plastic bathrooms – without compromising comfort.</p></div></div>
+            </div>
+            <div class="grid-2" style="gap:1.2rem;">
+              <img class="real-image" style="height:160px;" src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=250&fit=crop" alt="Cliff view">
+              <img class="real-image" style="height:160px;" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=250&fit=crop" alt="Hotel building">
+              <img class="real-image" style="height:160px;" src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=400&h=250&fit=crop" alt="Wine cellar">
+              <img class="real-image" style="height:160px;" src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1?w=400&h=250&fit=crop" alt="Spa treatment">
+            </div>
+          </div>
+        </div>
+
+        <!-- Special Offers Section -->
+        <div class="grid-3" style="margin-top: 2rem;">
+          <div class="service-detailed-card">
+            <i class="fas fa-tag service-icon" style="color: #1f4b75;"></i>
+            <div class="service-title">Early Bird</div>
+            <div class="service-desc">Book 30+ days ahead and save 15% on your entire stay</div>
+          </div>
+          <div class="service-detailed-card">
+            <i class="fas fa-clock service-icon" style="color: #1f4b75;"></i>
+            <div class="service-title">Last Minute</div>
+            <div class="service-desc">Book within 7 days and enjoy 10% off select rooms</div>
+          </div>
+          <div class="service-detailed-card">
+            <i class="fas fa-gem service-icon" style="color: #1f4b75;"></i>
+            <div class="service-title">Member Exclusive</div>
+            <div class="service-desc">Sign up for free and get 12% off + room upgrades</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT PAGE SECTION -->
+    <section id="about-page" class="page-section hidden">
+      <div class="page-card">
+        <h2 class="page-title"><i class="fas fa-water"></i> About us</h2>
+        <div style="margin-bottom: 2.5rem; background:#f2f7fd; border-radius:28px; padding:2rem;">
+          <p><span class="badge">EST. 1912 · 113 YEARS</span></p>
+          <p style="font-size:1.3rem;">Grand Hotel first opened its doors in <strong>1912</strong>, making it <strong>113 years</strong> old in 2025. What began as a seaside inn for travelers has grown into a <strong>5‑acre (approx. 21,000 m²)</strong> cliffside estate, blending historic charm with modern luxury. The property includes the main building, private beach, gardens, and a marina.</p>
+        </div>
+
+        <div class="grid-2" style="margin: 1rem 0;">
+          <div style="background: #e1edf7; border-radius: 28px; padding: 2rem;">
+            <h3 style="font-size: 2rem; color:#0a1c2e; margin-bottom:1.5rem;"><i class="fas fa-handshake"></i> hotel collaborations</h3>
+            <ul style="list-style: none; font-size: 1.2rem;">
+              <li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> Veuve Clicquot · champagne bar</li>
+              <li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> Ferrari Trento · official wine</li>
+              <li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> La Mer · spa exclusivity</li>
+              <li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> BMW i · electric fleet</li>
+            </ul>
+          </div>
+          <div style="background: #e1edf7; border-radius: 28px; padding: 2rem;">
+            <h3 style="font-size: 2rem; color:#0a1c2e; margin-bottom:1.5rem;"><i class="fas fa-crown"></i> grand celebrities</h3>
+            <p>Audrey Hepburn (1965), Frank Sinatra (1972), Princess Grace (1983), George Clooney (2015), Cate Blanchett (2022).</p>
+          </div>
+        </div>
+
+        <div class="grid-4" style="margin-top: 2rem;">
+          <div class="rating-category-card"><span class="rating-score">113</span> years</div>
+          <div class="rating-category-card"><span class="rating-score">5</span> acres</div>
+          <div class="rating-category-card"><span class="rating-score">20+</span> collab</div>
+          <div class="rating-category-card"><span class="rating-score">40+</span> celebs</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKING PAGE SECTION (Enhanced with Booking Steps) -->
+    <section id="booking-page" class="page-section hidden">
+      <div class="page-card">
+        <h2 class="page-title"><i class="fas fa-calendar-alt"></i> Booking</h2>
+        
+        <!-- Initial Booking Form -->
+        <div class="booking-form" id="initialBookingForm" style="margin-bottom: 2.5rem;">
+          <div class="form-row">
+            <div class="form-group"><label>arrival</label><input type="date" id="booking-arrival" value="2025-08-01"></div>
+            <div class="form-group"><label>departure</label><input type="date" id="booking-departure" value="2025-08-07"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>adults</label><select id="booking-adults"><option>2</option><option>1</option><option>3</option><option>4</option></select></div>
+            <div class="form-group"><label>children</label><select id="booking-children"><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
+            <div class="form-group"><label>room</label><select id="booking-room-type">
+              <option value="deluxe">deluxe ocean</option>
+              <option value="cliff">cliff suite</option>
+              <option value="lighthouse">lighthouse</option>
+              <option value="presidential">presidential</option>
+            </select></div>
+          </div>
+          <button class="btn" onclick="startBooking()"><i class="fas fa-book"></i> book the slot</button>
+        </div>
+
+        <!-- Booking Steps Interface -->
+        <div class="booking-steps" id="bookingSteps">
+          <!-- Step Indicator -->
+          <div class="step-indicator">
+            <div class="step active" id="step1">
+              <div class="step-number">1</div>
+              <div>Room</div>
+            </div>
+            <div class="step" id="step2">
+              <div class="step-number">2</div>
+              <div>Extras</div>
+            </div>
+            <div class="step" id="step3">
+              <div class="step-number">3</div>
+              <div>Payment</div>
+            </div>
+            <div class="step" id="step4">
+              <div class="step-number">4</div>
+              <div>Confirm</div>
+            </div>
+          </div>
+
+          <!-- Step 1: Room Selection -->
+          <div class="step-content active" id="step1Content">
+            <h3>Select Your Perfect Room</h3>
+            <div class="grid-2" style="margin-top: 1.5rem;">
+              <div class="room-card" onclick="selectRoom('deluxe')" id="room-deluxe">
+                <h4>Deluxe Ocean Room</h4>
+                <p>🌊 Ocean view · King bed · 45m²</p>
+                <p class="room-price">$680/night</p>
+              </div>
+              <div class="room-card" onclick="selectRoom('cliff')" id="room-cliff">
+                <h4>Cliff Suite</h4>
+                <p>⛰️ Cliff view · King bed · 65m²</p>
+                <p class="room-price">$980/night</p>
+              </div>
+              <div class="room-card" onclick="selectRoom('lighthouse')" id="room-lighthouse">
+                <h4>Lighthouse Room</h4>
+                <p>🏠 Unique experience · Queen bed · 35m²</p>
+                <p class="room-price">$520/night</p>
+              </div>
+              <div class="room-card" onclick="selectRoom('presidential')" id="room-presidential">
+                <h4>Presidential Suite</h4>
+                <p>👑 Panoramic view · 2 bedrooms · 120m²</p>
+                <p class="room-price">$1,850/night</p>
+              </div>
+            </div>
+            <div class="btn-group">
+              <button class="btn" onclick="nextStep(2)">Continue to Extras</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Add-ons -->
+          <div class="step-content" id="step2Content">
+            <h3>Enhance Your Stay</h3>
+            <div style="margin: 1.5rem 0;">
+              <div class="addon-item">
+                <input type="checkbox" id="breakfast" onchange="updateSummary()">
+                <label for="breakfast">
+                  <strong>Breakfast Buffet</strong><br>
+                  <small>Daily breakfast with ocean view</small>
+                </label>
+                <span style="margin-left: auto; font-weight: bold;">$25/person/day</span>
+              </div>
+              <div class="addon-item">
+                <input type="checkbox" id="spa" onchange="updateSummary()">
+                <label for="spa">
+                  <strong>Spa Package</strong><br>
+                  <small>One 60-minute massage per person</small>
+                </label>
+                <span style="margin-left: auto; font-weight: bold;">$120/person</span>
+              </div>
+              <div class="addon-item">
+                <input type="checkbox" id="airport" onchange="updateSummary()">
+                <label for="airport">
+                  <strong>Airport Transfer</strong><br>
+                  <small>Round trip luxury transport</small>
+                </label>
+                <span style="margin-left: auto; font-weight: bold;">$80</span>
+              </div>
+              <div class="addon-item">
+                <input type="checkbox" id="dinner" onchange="updateSummary()">
+                <label for="dinner">
+                  <strong>Sunset Dinner</strong><br>
+                  <small>3-course dinner at our rooftop restaurant</small>
+                </label>
+                <span style="margin-left: auto; font-weight: bold;">$95/couple</span>
+              </div>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-outline" onclick="prevStep(1)">Back</button>
+              <button class="btn" onclick="nextStep(3)">Continue to Payment</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Payment -->
+          <div class="step-content" id="step3Content">
+            <h3>Payment Method</h3>
+            <div class="payment-methods">
+              <div class="payment-method" onclick="selectPayment('credit')" id="payment-credit">
+                <i class="fas fa-credit-card"></i>
+                <p>Credit Card</p>
+              </div>
+              <div class="payment-method" onclick="selectPayment('paypal')" id="payment-paypal">
+                <i class="fab fa-paypal"></i>
+                <p>PayPal</p>
+              </div>
+              <div class="payment-method" onclick="selectPayment('apple')" id="payment-apple">
+                <i class="fab fa-apple-pay"></i>
+                <p>Apple Pay</p>
+              </div>
+              <div class="payment-method" onclick="selectPayment('google')" id="payment-google">
+                <i class="fab fa-google-pay"></i>
+                <p>Google Pay</p>
+              </div>
+            </div>
+            
+            <div id="creditCardForm" style="display: none; margin-top: 1.5rem;">
+              <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" placeholder="1234 5678 9012 3456">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Expiry Date</label>
+                  <input type="text" placeholder="MM/YY">
+                </div>
+                <div class="form-group">
+                  <label>CVV</label>
+                  <input type="text" placeholder="123">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Name on Card</label>
+                <input type="text" placeholder="John Doe">
+              </div>
+            </div>
+
+            <div class="btn-group" style="margin-top: 1.5rem;">
+              <button class="btn btn-outline" onclick="prevStep(2)">Back</button>
+              <button class="btn" onclick="nextStep(4)">Review Booking</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Confirmation -->
+          <div class="step-content" id="step4Content">
+            <h3>Confirm Your Booking</h3>
+            
+            <div class="summary-card" style="margin: 1.5rem 0;">
+              <h4>Booking Summary</h4>
+              <div class="summary-row">
+                <span>Check-in:</span>
+                <span id="summaryCheckin">Aug 1, 2025</span>
+              </div>
+              <div class="summary-row">
+                <span>Check-out:</span>
+                <span id="summaryCheckout">Aug 7, 2025</span>
+              </div>
+              <div class="summary-row">
+                <span>Guests:</span>
+                <span id="summaryGuests">2 Adults, 0 Children</span>
+              </div>
+              <div class="summary-row">
+                <span>Room:</span>
+                <span id="summaryRoom">Deluxe Ocean Room</span>
+              </div>
+              <div class="summary-row">
+                <span>Duration:</span>
+                <span id="summaryNights">6 nights</span>
+              </div>
+              <div class="summary-row">
+                <span>Room Total:</span>
+                <span id="summaryRoomTotal">$4,080</span>
+              </div>
+              <div class="summary-row">
+                <span>Extras:</span>
+                <span id="summaryExtras">$0</span>
+              </div>
+              <div class="summary-row">
+                <span>Taxes & Fees:</span>
+                <span id="summaryTaxes">$408</span>
+              </div>
+              <div class="summary-row summary-total">
+                <span>Total:</span>
+                <span id="summaryTotal">$4,488</span>
+              </div>
+            </div>
+
+            <div style="background: #e8f4f8; padding: 1rem; border-radius: 15px; margin: 1rem 0;">
+              <p><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Cancellation Policy:</strong> Free cancellation up to 14 days before arrival</p>
+            </div>
+
+            <div class="btn-group">
+              <button class="btn btn-outline" onclick="prevStep(3)">Back</button>
+              <button class="btn" onclick="confirmBooking()"><i class="fas fa-check-circle"></i> Confirm & Pay</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Original Info Cards (kept for reference) -->
+        <div class="grid-2" style="margin-top: 2rem;">
+          <div class="info-card" style="background:#e1edf7; padding:2rem; border-radius:28px;">
+            <h3>📱 online / 📞 offline</h3>
+            <p>Website, Expedia, or call +1 (888) 297-2583</p>
+            <h3>💰 discounts</h3>
+            <p>Early bird 15% · Last minute 10% · Member 12%</p>
+          </div>
+          <div class="info-card" style="background:#e1edf7; padding:2rem; border-radius:28px;">
+            <h3>💵 cost overview</h3>
+            <p>Deluxe $680 · Cliff suite $980 · Lighthouse $520 + taxes</p>
+            <h3>⏳ cancellation</h3>
+            <p>Free up to 14 days · 50% 7‑13 days · 0% under 7 days</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANAGEMENT PAGE SECTION -->
+    <section id="management-page" class="page-section hidden">
+      <div class="page-card">
+        <h2 class="page-title"><i class="fas fa-anchor"></i> Management & key personnel</h2>
+        
+        <div class="grid-3">
+          <div class="staff-card"><i class="fas fa-user-tie fa-3x"></i><div class="staff-name">Helena Blackwood</div><div>General Manager</div><div class="staff-contact"><i class="fas fa-phone-alt"></i> +1 (888) 297-1001</div><div class="staff-contact"><i class="fas fa-envelope"></i> h.blackwood@grandhotel.com</div></div>
+          <div class="staff-card"><i class="fas fa-knife-kitchen fa-3x"></i><div class="staff-name">Naomi Blue</div><div>Executive Chef</div><div class="staff-contact"><i class="fas fa-phone-alt"></i> +1 (888) 297-1002</div><div class="staff-contact"><i class="fas fa-envelope"></i> n.blue@grandhotel.com</div></div>
+          <div class="staff-card"><i class="fas fa-user-helmet-safety fa-3x"></i><div class="staff-name">James Kerr</div><div>Ops Director</div><div class="staff-contact"><i class="fas fa-phone-alt"></i> +1 (888) 297-1003</div></div>
+          <div class="staff-card"><i class="fas fa-hand-sparkles fa-3x"></i><div class="staff-name">Eliza Stone</div><div>Housekeeping Mgr</div><div class="staff-contact"><i class="fas fa-phone-alt"></i> +1 (888) 297-1004</div></div>
+          <div class="staff-card"><i class="fas fa-calendar-check fa-3x"></i><div class="staff-name">Marcus Cole</div><div>Events Manager</div><div class="staff-contact"><i class="fas fa-phone-alt"></i> +1 (888) 297-1005</div></div>
+          <div class="staff-card"><i class="fas fa-user-md fa-3x"></i><div class="staff-name">Dr. Anjali Roy</div><div>Guest Experience</div><div class="staff-contact"><i class="fas fa-phone-alt"></i> +1 (888) 297-1006</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES PAGE SECTION -->
+    <section id="services-page" class="page-section hidden">
+      <div class="page-card">
+        <h2 class="page-title"><i class="fas fa-concierge-bell"></i> Our services</h2>
+        
+        <div class="grid-2">
+          <div class="service-detailed-card"><i class="fas fa-utensils service-icon"></i><div class="service-title">Restaurant</div><img class="real-image" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop" alt="Restaurant"><div class="service-desc">Cliffside fine dining with ocean view. Breakfast 7–11am, dinner 6–10pm. Chef's tasting menu available.</div></div>
+          <div class="service-detailed-card"><i class="fas fa-broom service-icon"></i><div class="service-title">Housekeeping</div><img class="real-image" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=400&fit=crop" alt="Housekeeping"><div class="service-desc">Twice-daily service, eco-friendly products, same-day laundry, turndown with chocolates.</div></div>
+          <div class="service-detailed-card"><i class="fas fa-wifi service-icon"></i><div class="service-title">Free WiFi</div><img class="real-image" src="https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?w=600&h=400&fit=crop" alt="WiFi"><div class="service-desc">Gigabit fiber throughout hotel, no bandwidth limits, secure and free for guests.</div></div>
+          <div class="service-detailed-card"><i class="fas fa-blender service-icon"></i><div class="service-title">Room appliances</div><img class="real-image" src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&h=400&fit=crop" alt="Room appliances"><div class="service-desc">55" smart TV, Nespresso, minibar, Dyson fan, illy coffee maker in suites.</div></div>
+          <div class="service-detailed-card"><i class="fas fa-car service-icon"></i><div class="service-title">Vehicle services</div><img class="real-image" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop" alt="Car service"><div class="service-desc">Valet parking, EV charging, airport transfers, luxury car rentals, yacht charters.</div></div>
+          <div class="service-detailed-card"><i class="fas fa-swimmer service-icon"></i><div class="service-title">Pool & wellness</div><img class="real-image" src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600&h=400&fit=crop" alt="Pool"><div class="service-desc">Heated infinity pool, hydrotherapy, sauna, steam room. Poolside service daily.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS PAGE SECTION -->
+    <section id="reviews-page" class="page-section hidden">
+      <div class="page-card">
+        <h2 class="page-title"><i class="fas fa-star"></i> Ratings & reviews</h2>
+        
+        <div class="grid-2" style="margin-bottom:2rem;">
+          <div><p style="font-size:1.3rem;">Based on <strong>2,180 verified guest reviews</strong> (2024–2025).</p></div>
+          <div class="rating-category-card"><span class="rating-label">Overall</span><span class="rating-score">4.92</span><span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span></div>
+        </div>
+
+        <div class="grid-3">
+          <div class="rating-category-card"><i class="fas fa-smile fa-2x"></i><div class="rating-label">Hospitality</div><div class="rating-score">4.95</div><span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span></div>
+          <div class="rating-category-card"><i class="fas fa-building fa-2x"></i><div class="rating-label">Facilities</div><div class="rating-score">4.88</div><span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></span></div>
+          <div class="rating-category-card"><i class="fas fa-utensils fa-2x"></i><div class="rating-label">Food</div><div class="rating-score">4.93</div><span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span></div>
+          <div class="rating-category-card"><i class="fas fa-bed fa-2x"></i><div class="rating-label">Room</div><div class="rating-score">4.90</div><span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span></div>
+          <div class="rating-category-card"><i class="fas fa-tree fa-2x"></i><div class="rating-label">Ambience</div><div class="rating-score">4.96</div><span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span></div>
+          <img class="real-image" src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&h=300&fit=crop" alt="Ambience">
+        </div>
+
+        <div class="suggestion-card" style="margin-top:2rem;">
+          <h3><i class="fas fa-lightbulb"></i> Guest suggestions</h3>
+          <div class="grid-2">
+            <ul style="list-style:none;"><li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> More vegan options (June 2025)</li><li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> Later check-out for members</li><li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> Extra outlets (completed)</li></ul>
+            <ul style="list-style:none;"><li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> Yoga on terrace</li><li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> Quieter AC (solved)</li><li><i class="fas fa-check-circle" style="color:#1f4b75;"></i> More tours (now 3 daily)</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTS PAGE SECTION -->
+    <section id="events-page" class="page-section hidden">
+      <div class="page-card">
+        <h2 class="page-title"><i class="fas fa-champagne-glasses"></i> Meetings & events</h2>
+        
+        <div class="grid-3">
+          <div class="event-card">
+            <img class="real-image" style="height:160px;" src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=400&fit=crop" alt="Atlantic hall">
+            <div class="service-title" style="margin-top:1rem;">Atlantic hall</div>
+            <div class="service-desc"><i class="fas fa-users"></i> Capacity: 250 (theatre) / 180 (banquet)<br><i class="fas fa-utensils"></i> Catering: gourmet plated or buffet<br><i class="fas fa-coins"></i> Cost: $4,500/day (incl. AV)</div>
+          </div>
+          <div class="event-card">
+            <img class="real-image" style="height:160px;" src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=400&fit=crop" alt="Blue terrace">
+            <div class="service-title" style="margin-top:1rem;">Blue terrace</div>
+            <div class="service-desc"><i class="fas fa-users"></i> Capacity: 200 (outdoor ceremony)<br><i class="fas fa-utensils"></i> Catering: champagne reception + seafood<br><i class="fas fa-coins"></i> Cost: $3,800/day</div>
+          </div>
+          <div class="event-card">
+            <img class="real-image" style="height:160px;" src="https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=600&h=400&fit=crop" alt="Boardroom">
+            <div class="service-title" style="margin-top:1rem;">Boardroom</div>
+            <div class="service-desc"><i class="fas fa-users"></i> Capacity: 20 (conference style)<br><i class="fas fa-utensils"></i> Catering: executive lunch / coffee breaks<br><i class="fas fa-coins"></i> Cost: $1,200/day</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ATTRACTIONS PAGE SECTION -->
+    <section id="attractions-page" class="page-section hidden">
+      <div class="page-card">
+        <h2 class="page-title"><i class="fas fa-map-location-dot"></i> Nearby attractions</h2>
+        
+        <div class="grid-4">
+          <div><img class="real-image" src="https://images.unsplash.com/photo-1518709268805-07e9046278d9?w=400&h=250&fit=crop" alt="Lighthouse"><div class="image-caption">black rock lighthouse (0.6mi)</div></div>
+          <div><img class="real-image" src="https://images.unsplash.com/photo-1566125881257-7d6f2c5b3c9a?w=400&h=250&fit=crop" alt="Museum"><div class="image-caption">maritime museum (1.2mi)</div></div>
+          <div><img class="real-image" src="https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=400&h=250&fit=crop" alt="Park"><div class="image-caption">cliffside park (0.3mi)</div></div>
+          <div><img class="real-image" src="https://images.unsplash.com/photo-1565967511849-76a60a516170?w=400&h=250&fit=crop" alt="Tide pools"><div class="image-caption">tidal pools (0.2mi)</div></div>
+          <div><img class="real-image" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop" alt="Sunset point"><div class="image-caption">sunset point (0.7mi)</div></div>
+          <div><img class="real-image" src="https://images.unsplash.com/photo-1580137189272-c9379f8864fd?w=400&h=250&fit=crop" alt="Sea caves"><div class="image-caption">sea caves (2.3mi)</div></div>
+          <div><img class="real-image" src="https://images.unsplash.com/photo-1575550959106-5a7defe28b56?w=400&h=250&fit=crop" alt="Whale watching"><div class="image-caption">whale lookout (seasonal)</div></div>
+          <div><img class="real-image" src="https://images.unsplash.com/photo-1594756202469-9ff9799b2e4e?w=400&h=250&fit=crop" alt="Gemstone cove"><div class="image-caption">gemstone cove (1.8mi)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT PAGE SECTION -->
+    <section id="contact-page" class="page-section hidden">
+      <div class="page-card">
+        <h2 class="page-title"><i class="fas fa-address-book"></i> Contact us</h2>
+        
+        <div class="contact-info">
+          <div class="contact-detail"><i class="fas fa-phone fa-2x"></i> +1 (888) 297-BLUE</div>
+          <div class="contact-detail"><i class="fas fa-envelope fa-2x"></i> stay@grandhotel.com</div>
+          <div class="contact-detail"><i class="fas fa-map-marker-alt fa-2x"></i> 40 Blackrock Point</div>
+        </div>
+        
+        <div style="display: flex; gap: 2rem; margin-top: 2rem;">
+          <img class="real-image" style="height:180px;" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=300&fit=crop" alt="Hotel exterior">
+          <img class="real-image" style="height:180px;" src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=600&h=300&fit=crop" alt="Reception desk">
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGIN PAGE SECTION -->
+    <section id="login-page" class="page-section hidden">
+      <div class="auth-card">
+        <h2 class="auth-title"><i class="fas fa-sign-in-alt"></i> Welcome Back</h2>
+        
+        <div id="login-error" class="alert alert-error hidden">Invalid email or password</div>
+        <div id="login-success" class="alert alert-success hidden">Login successful! Redirecting...</div>
+        
+        <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Email Address</label>
+            <input type="email" id="login-email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" required>
+          </div>
+          
+          <div class="remember-forgot">
+            <div class="remember-me">
+              <input type="checkbox" id="remember">
+              <label for="remember">Remember me</label>
+            </div>
+            <a href="#" class="forgot-password" onclick="showForgotPassword()">Forgot Password?</a>
+          </div>
+          
+          <button type="submit" class="btn" style="width: 100%;"><i class="fas fa-sign-in-alt"></i> Login</button>
+        </form>
+        
+        <div class="auth-links">
+          Don't have an account? <a onclick="showPage('register')">Register here</a>
+        </div>
+        
+        <div class="divider">
+          <span>or login with</span>
+        </div>
+        
+        <div class="social-login">
+          <a href="#" class="social-btn" onclick="socialLogin('google')"><i class="fab fa-google"></i> Google</a>
+          <a href="#" class="social-btn" onclick="socialLogin('facebook')"><i class="fab fa-facebook-f"></i> Facebook</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTER PAGE SECTION -->
+    <section id="register-page" class="page-section hidden">
+      <div class="auth-card">
+        <h2 class="auth-title"><i class="fas fa-user-plus"></i> Create Account</h2>
+        
+        <div id="register-error" class="alert alert-error hidden"></div>
+        <div id="register-success" class="alert alert-success hidden">Registration successful! Please login.</div>
+        
+        <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Full Name</label>
+            <input type="text" id="reg-name" placeholder="John Doe" required>
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Email Address</label>
+            <input type="email" id="reg-email" placeholder="your@email.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="reg-password" required>
+            <div class="password-requirements">Minimum 6 characters</div>
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Confirm Password</label>
+            <input type="password" id="reg-confirm-password" required>
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Phone Number</label>
+            <input type="tel" id="reg-phone" placeholder="+1 234 567 890">
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-map-marker-alt"></i> Address</label>
+            <textarea id="reg-address" rows="3" placeholder="Your address"></textarea>
+          </div>
+          
+          <button type="submit" class="btn" style="width: 100%;"><i class="fas fa-user-plus"></i> Register</button>
+        </form>
+        
+        <div class="auth-links">
+          Already have an account? <a onclick="showPage('login')">Login here</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORGOT PASSWORD PAGE SECTION -->
+    <section id="forgot-password-page" class="page-section hidden">
+      <div class="auth-card">
+        <h2 class="auth-title"><i class="fas fa-key"></i> Reset Password</h2>
+        
+        <div id="forgot-error" class="alert alert-error hidden"></div>
+        <div id="forgot-success" class="alert alert-success hidden">Password reset link sent to your email!</div>
+        
+        <form class="auth-form" onsubmit="handleForgotPassword(event)">
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Email Address</label>
+            <input type="email" id="forgot-email" placeholder="your@email.com" required>
+            <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #6c757d;">
+              Enter your email address and we'll send you a link to reset your password.
+            </div>
+          </div>
+          
+          <button type="submit" class="btn" style="width: 100%;"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
+        </form>
+        
+        <div class="auth-links">
+          <a onclick="showPage('login')"><i class="fas fa-arrow-left"></i> Back to Login</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Function to show selected page and hide others
+    function showPage(pageName) {
+      // Hide all page sections
+      const sections = document.querySelectorAll('.page-section');
+      sections.forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      // Show the selected page
+      const selectedPage = document.getElementById(pageName + '-page');
+      if (selectedPage) {
+        selectedPage.classList.remove('hidden');
+      }
+      
+      // Update active state in navigation (only for main nav links)
+      if (['home', 'about', 'booking', 'management', 'services', 'reviews', 'events', 'attractions', 'contact'].includes(pageName)) {
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+        });
+        
+        const activeNav = document.getElementById('nav-' + pageName);
+        if (activeNav) {
+          activeNav.classList.add('active');
+        }
+      }
+      
+      // Update URL hash without scrolling
+      history.pushState(null, null, '#' + pageName);
+    }
+    
+    // Handle login form submission
+    function handleLogin(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errorDiv = document.getElementById('login-error');
+      const successDiv = document.getElementById('login-success');
+      
+      // Simple validation (in real app, this would be server-side)
+      if (email && password) {
+        // Hide error if previously shown
+        errorDiv.classList.add('hidden');
+        
+        // Show success message
+        successDiv.classList.remove('hidden');
+        
+        // Simulate login success
+        setTimeout(() => {
+          alert('Login successful! Welcome back, ' + email);
+          showPage('home');
+          // Clear form
+          document.getElementById('loginForm').reset();
+          successDiv.classList.add('hidden');
+        }, 1500);
+      } else {
+        errorDiv.classList.remove('hidden');
+      }
+    }
+    
+    // Handle registration form submission
+    function handleRegister(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+      const confirmPassword = document.getElementById('reg-confirm-password').value;
+      const errorDiv = document.getElementById('register-error');
+      const successDiv = document.getElementById('register-success');
+      
+      // Validation
+      if (!name || !email || !password) {
+        errorDiv.textContent = 'All fields are required';
+        errorDiv.classList.remove('hidden');
+        successDiv.classList.add('hidden');
+        return;
+      }
+      
+      if (password.length < 6) {
+        errorDiv.textContent = 'Password must be at least 6 characters';
+        errorDiv.classList.remove('hidden');
+        successDiv.classList.add('hidden');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match';
+        errorDiv.classList.remove('hidden');
+        successDiv.classList.add('hidden');
+        return;
+      }
+      
+      // If validation passes
+      errorDiv.classList.add('hidden');
+      successDiv.classList.remove('hidden');
+      
+      // Simulate registration success
+      setTimeout(() => {
+        alert('Registration successful! Please login.');
+        showPage('login');
+        // Clear form
+        document.getElementById('registerForm').reset();
+        successDiv.classList.add('hidden');
+      }, 1500);
+    }
+    
+    // Handle forgot password
+    function handleForgotPassword(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById('forgot-email').value;
+      const errorDiv = document.getElementById('forgot-error');
+      const successDiv = document.getElementById('forgot-success');
+      
+      if (email) {
+        errorDiv.classList.add('hidden');
+        successDiv.classList.remove('hidden');
+        
+        setTimeout(() => {
+          alert('Password reset link sent to ' + email);
+          showPage('login');
+          successDiv.classList.add('hidden');
+        }, 1500);
+      } else {
+        errorDiv.textContent = 'Please enter your email';
+        errorDiv.classList.remove('hidden');
+        successDiv.classList.add('hidden');
+      }
+    }
+    
+    // Show forgot password page
+    function showForgotPassword() {
+      showPage('forgot-password');
+    }
+    
+    // Handle social login
+    function socialLogin(provider) {
+      alert(provider + ' login would be implemented here');
+    }
+
+    // Booking System Functions
+    let currentStep = 1;
+    let selectedRoom = 'deluxe';
+    let selectedPayment = 'credit';
+    let bookingData = {
+      room: 'deluxe',
+      adults: 2,
+      children: 0,
+      arrival: '2025-08-01',
+      departure: '2025-08-07'
+    };
+
+    function quickBookFromHome() {
+      // Get values from home page booking form
+      bookingData.adults = document.getElementById('home-adults').value;
+      bookingData.children = document.getElementById('home-children').value;
+      bookingData.arrival = document.getElementById('home-arrival').value;
+      bookingData.departure = document.getElementById('home-departure').value;
+      bookingData.room = document.getElementById('home-room').value;
+      
+      // Switch to booking page
+      showPage('booking');
+      
+      // Initialize booking process
+      setTimeout(() => {
+        startBooking();
+      }, 100);
+    }
+
+    function startBooking() {
+      // Get values from the initial form if they exist
+      if (document.getElementById('booking-arrival')) {
+        bookingData.adults = document.getElementById('booking-adults').value;
+        bookingData.children = document.getElementById('booking-children').value;
+        bookingData.arrival = document.getElementById('booking-arrival').value;
+        bookingData.departure = document.getElementById('booking-departure').value;
+        bookingData.room = document.getElementById('booking-room-type').value;
+      }
+      
+      // Hide initial form and show booking steps
+      document.getElementById('initialBookingForm').style.display = 'none';
+      document.getElementById('bookingSteps').style.display = 'block';
+      
+      // Initialize with selected room
+      selectRoom(bookingData.room);
+      
+      // Update summary
+      updateSummary();
+    }
+
+    function selectRoom(room) {
+      selectedRoom = room;
+      bookingData.room = room;
+      
+      // Remove selected class from all room cards
+      document.querySelectorAll('.room-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      
+      // Add selected class to chosen room
+      const roomElement = document.getElementById(`room-${room}`);
+      if (roomElement) {
+        roomElement.classList.add('selected');
+      }
+      
+      updateSummary();
+    }
+
+    function selectPayment(method) {
+      selectedPayment = method;
+      
+      // Remove selected class from all payment methods
+      document.querySelectorAll('.payment-method').forEach(m => {
+        m.classList.remove('selected');
+      });
+      
+      // Add selected class to chosen method
+      const paymentElement = document.getElementById(`payment-${method}`);
+      if (paymentElement) {
+        paymentElement.classList.add('selected');
+      }
+      
+      // Show/hide credit card form
+      const creditCardForm = document.getElementById('creditCardForm');
+      if (creditCardForm) {
+        creditCardForm.style.display = method === 'credit' ? 'block' : 'none';
+      }
+    }
+
+    function nextStep(step) {
+      // Update step indicators
+      document.querySelectorAll('.step').forEach((s, index) => {
+        s.classList.remove('active', 'completed');
+        if (index + 1 < step) {
+          s.classList.add('completed');
+        } else if (index + 1 === step) {
+          s.classList.add('active');
+        }
+      });
+      
+      // Hide all step contents
+      document.querySelectorAll('.step-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Show current step content
+      const stepContent = document.getElementById(`step${step}Content`);
+      if (stepContent) {
+        stepContent.classList.add('active');
+      }
+      currentStep = step;
+      
+      // Update summary when reaching confirmation
+      if (step === 4) {
+        updateSummary();
+      }
+    }
+
+    function prevStep(step) {
+      nextStep(step);
+    }
+
+    function updateSummary() {
+      // Calculate nights
+      const arrival = new Date(bookingData.arrival);
+      const departure = new Date(bookingData.departure);
+      const nights = Math.round((departure - arrival) / (1000 * 60 * 60 * 24)) || 1;
+      
+      // Room prices
+      const roomPrices = {
+        deluxe: 680,
+        cliff: 980,
+        lighthouse: 520,
+        presidential: 1850
+      };
+      
+      const roomPrice = roomPrices[selectedRoom] || 680;
+      const roomTotal = roomPrice * nights;
+      
+      // Calculate extras
+      let extrasTotal = 0;
+      const breakfastCheck = document.getElementById('breakfast');
+      const spaCheck = document.getElementById('spa');
+      const airportCheck = document.getElementById('airport');
+      const dinnerCheck = document.getElementById('dinner');
+      
+      if (breakfastCheck && breakfastCheck.checked) {
+        extrasTotal += 25 * parseInt(bookingData.adults) * nights;
+      }
+      if (spaCheck && spaCheck.checked) {
+        extrasTotal += 120 * parseInt(bookingData.adults);
+      }
+      if (airportCheck && airportCheck.checked) {
+        extrasTotal += 80;
+      }
+      if (dinnerCheck && dinnerCheck.checked) {
+        extrasTotal += 95;
+      }
+      
+      const taxes = Math.round(roomTotal * 0.1);
+      const total = roomTotal + extrasTotal + taxes;
+      
+      // Update summary display
+      const summaryCheckin = document.getElementById('summaryCheckin');
+      const summaryCheckout = document.getElementById('summaryCheckout');
+      const summaryGuests = document.getElementById('summaryGuests');
+      const summaryRoom = document.getElementById('summaryRoom');
+      const summaryNights = document.getElementById('summaryNights');
+      const summaryRoomTotal = document.getElementById('summaryRoomTotal');
+      const summaryExtras = document.getElementById('summaryExtras');
+      const summaryTaxes = document.getElementById('summaryTaxes');
+      const summaryTotal = document.getElementById('summaryTotal');
+      
+      if (summaryCheckin) {
+        summaryCheckin.textContent = new Date(bookingData.arrival).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      if (summaryCheckout) {
+        summaryCheckout.textContent = new Date(bookingData.departure).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      if (summaryGuests) {
+        summaryGuests.textContent = `${bookingData.adults} Adults, ${bookingData.children} Children`;
+      }
+      
+      const roomNames = {
+        deluxe: 'Deluxe Ocean Room',
+        cliff: 'Cliff Suite',
+        lighthouse: 'Lighthouse Room',
+        presidential: 'Presidential Suite'
+      };
+      if (summaryRoom) {
+        summaryRoom.textContent = roomNames[selectedRoom];
+      }
+      if (summaryNights) {
+        summaryNights.textContent = `${nights} nights`;
+      }
+      if (summaryRoomTotal) {
+        summaryRoomTotal.textContent = `$${roomTotal.toLocaleString()}`;
+      }
+      if (summaryExtras) {
+        summaryExtras.textContent = `$${extrasTotal}`;
+      }
+      if (summaryTaxes) {
+        summaryTaxes.textContent = `$${taxes}`;
+      }
+      if (summaryTotal) {
+        summaryTotal.textContent = `$${total.toLocaleString()}`;
+      }
+    }
+
+    function confirmBooking() {
+      alert('Booking confirmed! A confirmation email has been sent to your registered email address.');
+      // Here you would typically send the booking data to your server
+      console.log('Booking confirmed:', bookingData);
+      
+      // Reset booking form
+      document.getElementById('initialBookingForm').style.display = 'block';
+      document.getElementById('bookingSteps').style.display = 'none';
+    }
+    
+    // Handle initial load based on URL hash or default to home
+    window.addEventListener('load', function() {
+      const hash = window.location.hash.substring(1);
+      if (hash && document.getElementById(hash + '-page')) {
+        showPage(hash);
+      } else {
+        showPage('home');
+      }
+    });
+    
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function() {
+      const hash = window.location.hash.substring(1);
+      if (hash && document.getElementById(hash + '-page')) {
+        showPage(hash);
+      } else {
+        showPage('home');
+      }
+    });
+    
+    // Make logo clickable to go to home
+    document.querySelector('.logo').addEventListener('click', function() {
+      showPage('home');
+    });
+  </script>
+</body>
+</html>
